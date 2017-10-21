@@ -1,8 +1,9 @@
 var express = require('express');
 var passport = require('passport');
 var bodyParser = require('body-parser');
-var FacebookStrategy = require('passport-facebook');
 var LocalStrategy = require('passport-local');
+var GoogleStrategy = require('passport-google-oauth20');
+//var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
 var { User } = require('./models/models');
@@ -11,18 +12,10 @@ var routes = require('./routes/routes');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
-const transformFacebookProfile = (profile) => ({
-  name: profile.name,
-  avatar: profile.picture.data.url,
+const transformGoogleProfile = (profile) => ({
+  name: profile.displayName,
+  avatar: profile.image.url,
 });
-
-// Register Facebook Passport strategy
-// passport.use(new FacebookStrategy(facebook,
-//   // Gets called when user authorizes access to their profile
-//   async (accessToken, refreshToken, profile, done)
-//   // Return done callback and pass transformed user object
-//   => done(null, transformFacebookProfile(profile._json))
-// ));
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
@@ -30,8 +23,20 @@ passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
 
+passport.use(new GoogleStrategy({
+    clientID:     process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL,
+    passReqToCallback   : true
+  },
+  function(request, accessToken, refreshToken, profile, done) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
 // Initialize http server
-const app = express();
+var app = express();
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -47,13 +52,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Set up Facebook auth routes
-app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.use(auth(passport));
+app.use(routes);
 
-app.get('/auth/facebook/callback',
-passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login/failure' }),
-// Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-(req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => res.redirect('/users/' + req.user));
 
 // passport strategy
 passport.use(new LocalStrategy(function(username, password, done) {
@@ -79,81 +84,20 @@ passport.use(new LocalStrategy(function(username, password, done) {
   });
 }));
 
-// //ROUTES
-app.use(routes);
-app.use(auth(passport));
+//ROUTES
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope:
+  	[ 'https://localhost:3000/auth/plus.login',
+  	  'https://localhost:3000/auth/plus.profile.emails.read' ] }
+));
+
+app.get( '/users/register',
+	passport.authenticate( 'google', {
+		successRedirect: '/users',
+		failureRedirect: '/login'
+}));
+
+
 
 module.exports = app;
-
-
-// "use strict";
-//
-// var express = require('express');
-// var path = require('path');
-// var bodyParser = require('body-parser');
-// var passport = require('passport');
-// var flash = require('connect-flash');
-//
-// var { User } = require('./models');
-//
-// // Make sure we have all required env vars. If these are missing it can lead
-// // to confusing, unpredictable errors later.
-// var REQUIRED_ENV = ['MONGODB_URI'];
-// REQUIRED_ENV.forEach(function(el) {
-//   if (!process.env[el])
-//     throw new Error("Missing required env var " + el);
-// });
-//
-// var app = express();
-// var IS_DEV = app.get('env') === 'development';
-//
-// app.use(flash());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, 'public')));
-//
-//
-// app.use(passport.initialize());
-// app.use(passport.session());
-//
-// passport.serializeUser(function(user, done) {
-//   done(null, user._id);
-// });
-//
-// passport.deserializeUser(function(id, done) {
-//   User.findById(id, function(err, user) {
-//     done(err, user);
-//   });
-// });
-//
-//
-// //ROUTES
-// app.use(routes);
-// app.use(auth(passport));
-//
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-//
-// // error handlers
-//
-// // development error handler
-// // will print stacktrace
-// if (IS_DEV) {
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.send("Error: " + err.message + "\n" + err);
-//   });
-// }
-//
-// // production error handler
-// // no stacktraces leaked to user
-// app.use(function(err, req, res, next) {
-//   res.status(err.status || 500);
-//   res.send("Error: " + err.message);
-// });
-//
-// module.exports = app;
