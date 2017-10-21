@@ -3,9 +3,10 @@ var passport = require('passport');
 var bodyParser = require('body-parser');
 var FacebookStrategy = require('passport-facebook');
 var LocalStrategy = require('passport-local');
+var util = require('util');
+var session = require('cookie-session');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
-var session = require('cookie-session');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
@@ -98,7 +99,6 @@ module.exports = app;
 // var path = require('path');
 // var bodyParser = require('body-parser');
 // var passport = require('passport');
-// var util = require('util');
 // var flash = require('connect-flash');
 //
 // var { User } = require('./models');
