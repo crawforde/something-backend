@@ -17,6 +17,7 @@ router.post('/create', function(req, res) {
         return;
       }
       res.status(200);
+      res.json({success: true, event: event});
     });
 })
 
