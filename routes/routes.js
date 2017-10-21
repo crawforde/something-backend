@@ -6,9 +6,6 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
 router.post('/create', function(req, res) {
-    if (!validateReq(req.body)) {
-      console.log('no req.body')
-    }
     var e = new models.Event({
       eventDate: req.body.eventDate,
       eventLocation: req.body.eventLocation,
