@@ -1,5 +1,6 @@
 var express = require('express');
 var passport = require('passport');
+var bodyParser = require('body-parser');
 var FacebookStrategy = require('passport-facebook');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
@@ -12,6 +13,9 @@ const transformFacebookProfile = (profile) => ({
   name: profile.name,
   avatar: profile.picture.data.url,
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // // Register Facebook Passport strategy
 // passport.use(new FacebookStrategy(facebook,
