@@ -113,7 +113,8 @@ passport.use(new LocalStrategy(function(username, password, done) {
 // 		successRedirect: '/users',
 // 		failureRedirect: '/login'
 // }));
-
+app.use(auth(passport));
+app.use(routes);
 
 
 module.exports = app;
