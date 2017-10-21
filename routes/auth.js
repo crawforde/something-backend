@@ -1,10 +1,10 @@
 "use strict";
 
 var express = require('express');
-var models = require('./models');
-var User = models.User;
-var Message = models.Message;
 var _ = require('underscore');
+var router = express.Router();
+var models = require('../models/models');
+
 
 module.exports = function (passport) {
   var router = express.Router();
@@ -24,9 +24,9 @@ module.exports = function (passport) {
     failureFlash: true
   }));
 
-  router.post('/register', function(req, res, next) {
+  router.post('/register/mouse', function(req, res, next) {
     var params = _.pick(req.body, ['username', 'password']);
-    models.User.create(params, function(err, user) {
+    User.findOrCreate(params, function(err, user) {
       if (err) {
         res.status(400).json({
           success: false,
@@ -40,6 +40,24 @@ module.exports = function (passport) {
       }
     });
   });
+
+  router.post('/register', function(req, res) {
+      if (!validateReq(req.body)) {
+        console.log('no req.body')
+      }
+      var u = new models.User({
+        username: req.body.username,
+        password: req.body.password
+      });
+      u.save(function(err, user) {
+        if (err) {
+          console.log(err);
+          res.status(500).redirect('/register');
+          return;
+        }
+        res.status(200);
+      });
+  })
 
   router.get('/logout', function(req, res) {
     req.logout();
