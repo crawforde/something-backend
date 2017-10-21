@@ -54,8 +54,8 @@ passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/log
 (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
 // //ROUTES
-app.use(auth(passport));
 app.use(routes);
+app.use(auth(passport));
 
 module.exports = app;
 
