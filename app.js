@@ -6,11 +6,8 @@ var GoogleStrategy = require('passport-google-oauth20');
 //var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
-<<<<<<< HEAD
 var models = require('./models/models');
-=======
 var { User } = require('./models/models');
->>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
@@ -27,7 +24,7 @@ passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
 
-<<<<<<< HEAD
+
 passport.use(new GoogleStrategy({
     clientID:     process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -40,7 +37,7 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
-=======
+
 // passport.use(new GoogleStrategy({
 //     clientID:     process.env.CLIENT_ID,
 //     clientSecret: process.env.CLIENT_SECRET,
@@ -53,7 +50,7 @@ passport.use(new GoogleStrategy({
 //     });
 //   }
 // ));
->>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
+
 // Initialize http server
 var app = express();
 
