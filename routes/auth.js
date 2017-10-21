@@ -13,8 +13,8 @@ module.exports = function (passport) {
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
 
-  /* Authentication routes */
-
+  // /* Authentication routes */
+  //
   router.get('/login/failure', function(req, res) {
     res.status(401).json({
       success: false,
@@ -27,7 +27,7 @@ module.exports = function (passport) {
     failureRedirect: '/login/failure',
     failureFlash: true
   }));
-
+  //
   router.post('/register', function(req, res, next) {
     const user = new models.User({
       username: req.body.username,
@@ -49,7 +49,7 @@ module.exports = function (passport) {
       }
     });
   });
-
+  //
   router.post('/register', function(req, res) {
       const u = new models.User({
         username: req.body.username,
@@ -63,12 +63,12 @@ module.exports = function (passport) {
         } else {
           res.json({
             success: true,
-            user
+            user: user
           });
         }
       });
   })
-
+  //
   router.get('/logout', function(req, res) {
     req.logout();
     res.json({
@@ -79,13 +79,13 @@ module.exports = function (passport) {
 
   router.get('/login/success', function(req, res) {
     var user = _.pick(req.user, 'username', '_id');
-    console.log('NEW USER MADE')
+    console.log(req.user)
     res.json({
       success: true,
       user: user
     });
   });
-
+  //
 
   router.use('/', function(req,res,next){
     if(req.user){
@@ -98,6 +98,12 @@ module.exports = function (passport) {
       });
     }
   });
+  router.get('/', function(req,res,next){
+    res.send('hi there!')
+  });
+  router.use(function(req,res,next){
+    next()
+  })
 
   return router;
 };
