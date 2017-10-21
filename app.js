@@ -1,10 +1,11 @@
-import express from 'express';
-import passport from 'passport';
-import FacebookStrategy from 'passport-facebook';
+var express = require('express');
+var passport = require('passport');
+var bodyParser = require('body-parser');
+var FacebookStrategy = require('passport-facebook');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 // Import Facebook and Google OAuth apps configs
-import { facebook } from './config';
+// var { facebook } = require('./config');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
@@ -33,6 +34,9 @@ passport.deserializeUser((user, done) => done(null, user));
 // Initialize http server
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -41,13 +45,13 @@ app.use(passport.session());
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback',
-passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login/failure' }),
 // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
 (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
 // //ROUTES
-app.use(auth(passport));
 app.use(routes);
+app.use(auth(passport));
 
 module.exports = app;
 

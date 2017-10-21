@@ -2,12 +2,19 @@
 
 var express = require('express');
 var _ = require('underscore');
+<<<<<<< HEAD
 var router = express.Router();
 var models = require('../models/models');
+=======
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+>>>>>>> e03433e45a9925238e1eccc76b6e0ea4860a901a
 
 
 module.exports = function (passport) {
   var router = express.Router();
+  router.use(bodyParser.json());
+  router.use(bodyParser.urlencoded({ extended: true }));
 
   /* Authentication routes */
 
@@ -24,9 +31,13 @@ module.exports = function (passport) {
     failureFlash: true
   }));
 
-  router.post('/register/mouse', function(req, res, next) {
-    var params = _.pick(req.body, ['username', 'password']);
-    User.findOrCreate(params, function(err, user) {
+  router.post('/register', function(req, res, next) {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password
+    })
+    //var params = _.pick(req.body, ["username", "password"]);
+    user.save(function(err, user) {
       if (err) {
         res.status(400).json({
           success: false,
