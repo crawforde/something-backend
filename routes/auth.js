@@ -55,6 +55,7 @@ module.exports = function (passport) {
         username: req.body.username,
         password: req.body.password
       });
+      console.log(u);
       u.save(function(err, user) {
         if (err) {
           console.log(err);
