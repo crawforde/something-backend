@@ -24,7 +24,7 @@ module.exports = function (passport) {
 
   router.post('/register', function(req, res, next) {
     var params = _.pick(req.body, ['username', 'password']);
-    models.User.create(params, function(err, user) {
+    User.create(params, function(err, user) {
       if (err) {
         res.status(400).json({
           success: false,
