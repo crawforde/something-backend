@@ -51,7 +51,7 @@ module.exports = function (passport) {
   });
 
   router.post('/register', function(req, res) {
-      var u = new models.User({
+      const u = new models.User({
         username: req.body.username,
         password: req.body.password
       });
