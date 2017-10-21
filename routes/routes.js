@@ -2,6 +2,8 @@
 
 const router = require('express').Router();
 var models = require('../models/models');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 router.post('/create', function(req, res) {
     if (!validateReq(req.body)) {
@@ -12,9 +14,8 @@ router.post('/create', function(req, res) {
       eventLocation: req.body.eventLocation,
       eventDescription: req.body.eventDescription
     });
-    e.save(function(err, user) {
+    e.save(function(err, event) {
       if (err) {
-        console.log(err);
         res.status(500);
         return;
       }
