@@ -6,16 +6,20 @@ var GoogleStrategy = require('passport-google-oauth20');
 //var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
+<<<<<<< HEAD
 var models = require('./models/models');
+=======
+var { User } = require('./models/models');
+>>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
-const transformGoogleProfile = (profile) => ({
-  name: profile.displayName,
-  avatar: profile.image.url,
-});
+// const transformGoogleProfile = (profile) => ({
+//   name: profile.displayName,
+//   avatar: profile.image.url,
+// });
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
@@ -23,6 +27,7 @@ passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
 
+<<<<<<< HEAD
 passport.use(new GoogleStrategy({
     clientID:     process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -35,6 +40,20 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
+=======
+// passport.use(new GoogleStrategy({
+//     clientID:     process.env.CLIENT_ID,
+//     clientSecret: process.env.CLIENT_SECRET,
+//     callbackURL: process.env.CALLBACK_URL,
+//     passReqToCallback   : true
+//   },
+//   function(request, accessToken, refreshToken, profile, done) {
+//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//       return done(err, user);
+//     });
+//   }
+// ));
+>>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
 // Initialize http server
 var app = express();
 
@@ -52,13 +71,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-app.use(auth(passport));
-app.use(routes);
+// app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+// app.use(auth(passport));
+// app.use(routes);
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => res.redirect('/users/' + req.user));
+// app.get('/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   (req, res) => res.redirect('/users/' + req.user));
 
 // passport strategy
 passport.use(new LocalStrategy(function(username, password, done) {
@@ -85,18 +104,18 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 //ROUTES
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope:
-  	[ 'https://localhost:3000/auth/plus.login',
-  	  'https://localhost:3000/auth/plus.profile.emails.read' ] }
-));
-
-app.get( '/users/register',
-	passport.authenticate( 'google', {
-		successRedirect: '/users',
-		failureRedirect: '/login'
-}));
+//
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope:
+//   	[ 'https://localhost:3000/auth/plus.login',
+//   	  'https://localhost:3000/auth/plus.profile.emails.read' ] }
+// ));
+//
+// app.get( '/users/register',
+// 	passport.authenticate( 'google', {
+// 		successRedirect: '/users',
+// 		failureRedirect: '/login'
+// }));
 
 
 
