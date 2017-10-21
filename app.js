@@ -4,8 +4,7 @@ var bodyParser = require('body-parser');
 var FacebookStrategy = require('passport-facebook');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
-// Import Facebook and Google OAuth apps configs
-// var { facebook } = require('./config');
+var session = require('cookie-session');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
@@ -14,7 +13,6 @@ const transformFacebookProfile = (profile) => ({
   avatar: profile.picture.data.url,
 });
 
-
 // // Register Facebook Passport strategy
 // passport.use(new FacebookStrategy(facebook,
 //   // Gets called when user authorizes access to their profile
@@ -22,6 +20,10 @@ const transformFacebookProfile = (profile) => ({
 //   // Return done callback and pass transformed user object
 //   => done(null, transformFacebookProfile(profile._json))
 // ));
+
+app.use(session({
+  keys: [ process.env.SECRET || 'fake secret' ]
+}));
 
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
@@ -58,6 +60,30 @@ passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/log
 // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
 (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
+// passport strategy
+passport.use(new LocalStrategy(function(username, password, done) {
+  if (! util.isString(username)) {
+    done(null, false, {message: 'User must be string.'});
+    return;
+  }
+  // Find the user with the given username
+  User.findOne({ username: username, password: password }, function (err, user) {
+    // if there's an error, finish trying to authenticate (auth failed)
+    if (err) {
+      done(err);
+      return;
+    }
+    // if no user present, auth failed
+    if (!user) {
+      done(null, false, { message: 'Incorrect username/password combination.' });
+      return;
+    }
+
+    // auth has has succeeded
+    done(null, user);
+  });
+}));
+
 // //ROUTES
 app.use(routes);
 app.use(auth(passport));
@@ -93,10 +119,6 @@ module.exports = app;
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 //
-// var session = require('cookie-session');
-// app.use(session({
-//   keys: [ process.env.SECRET || 'fake secret' ]
-// }));
 //
 // app.use(passport.initialize());
 // app.use(passport.session());
@@ -111,29 +133,6 @@ module.exports = app;
 //   });
 // });
 //
-// // passport strategy
-// passport.use(new LocalStrategy(function(username, password, done) {
-//   if (! util.isString(username)) {
-//     done(null, false, {message: 'User must be string.'});
-//     return;
-//   }
-//   // Find the user with the given username
-//   User.findOne({ username: username, password: password }, function (err, user) {
-//     // if there's an error, finish trying to authenticate (auth failed)
-//     if (err) {
-//       done(err);
-//       return;
-//     }
-//     // if no user present, auth failed
-//     if (!user) {
-//       done(null, false, { message: 'Incorrect username/password combination.' });
-//       return;
-//     }
-//
-//     // auth has has succeeded
-//     done(null, user);
-//   });
-// }));
 //
 // //ROUTES
 // app.use(routes);
