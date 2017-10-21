@@ -20,12 +20,12 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Register Facebook Passport strategy
-passport.use(new FacebookStrategy(facebook,
-  // Gets called when user authorizes access to their profile
-  async (accessToken, refreshToken, profile, done)
-  // Return done callback and pass transformed user object
-  => done(null, transformFacebookProfile(profile._json))
-));
+// passport.use(new FacebookStrategy(facebook,
+//   // Gets called when user authorizes access to their profile
+//   async (accessToken, refreshToken, profile, done)
+//   // Return done callback and pass transformed user object
+//   => done(null, transformFacebookProfile(profile._json))
+// ));
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
