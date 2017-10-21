@@ -6,11 +6,11 @@ var _ = require('underscore');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 module.exports = function (passport) {
   var router = express.Router();
+  router.use(bodyParser.json());
+  router.use(bodyParser.urlencoded({ extended: true }));
 
   /* Authentication routes */
 
