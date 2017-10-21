@@ -1,6 +1,7 @@
 "use strict";
 
 const router = require('express').Router();
+var models = require('../models/models');
 
 router.post('/create', function(req, res) {
     if (!validateReq(req.body)) {
@@ -20,6 +21,14 @@ router.post('/create', function(req, res) {
       res.status(200);
     });
 })
+
+router.get('/events', function(req, res, next) {
+  // Gets all users
+  Event.find({}, function(err, events) {
+    console.log(events)
+    res.send(events);
+  })
+});
 
 
 router.get('/test', function(req, res) {
