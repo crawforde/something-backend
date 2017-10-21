@@ -51,9 +51,6 @@ module.exports = function (passport) {
   });
 
   router.post('/register', function(req, res) {
-      if (!validateReq(req.body)) {
-        console.log('no req.body')
-      }
       var u = new models.User({
         username: req.body.username,
         password: req.body.password
@@ -62,9 +59,12 @@ module.exports = function (passport) {
         if (err) {
           console.log(err);
           res.status(500).redirect('/register');
-          return;
+        } else {
+          res.json({
+            success: true,
+            user
+          });
         }
-        res.status(200);
       });
   })
 
