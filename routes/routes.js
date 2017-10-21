@@ -27,8 +27,12 @@ router.get('/events', function(req, res, next) {
   // Gets all users
   console.log('GETS HERE')
   models.Event.find({}, function(err, events) {
-    console.log(events);
-    res.json({success: true, events: events});
+    if (events) {
+      console.log(events);
+      res.json({success: true, events: events});
+    } else {
+      res.json({success: false, error: err})
+    }
   })
 });
 
