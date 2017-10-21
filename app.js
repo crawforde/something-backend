@@ -5,6 +5,7 @@ var FacebookStrategy = require('passport-facebook');
 var LocalStrategy = require('passport-local');
 var util = require('util');
 var session = require('cookie-session');
+var { User } = require('./models');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
