@@ -29,7 +29,7 @@ module.exports = function (passport) {
   }));
 
   router.post('/register', function(req, res, next) {
-    const user = new User({
+    const user = new models.User({
       username: req.body.username,
       password: req.body.password
     })
