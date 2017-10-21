@@ -1,10 +1,10 @@
-// var chrono = require('chrono-node');
+var chrono = require('chrono-node');
 var parse = require('parse-messy-schedule');
 
 function formEvent(info) {
   return new Promise(function(resolve, reject) {
     console.log(info);
-    const dates = info.time.map(time=>time);
+    const dates = info.time.map(time=>chrono.parseDate(time));
     const dateStart = dates.reduce((actual,next)=>{
       if (!next) return actual
       return (actual>next)?actual:next

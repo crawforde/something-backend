@@ -1,9 +1,9 @@
 const Vision = require('@google-cloud/vision');
 const vision = Vision();
 
-function textDetect(path){
+function textDetect(file){
   let detections;
-  return vision.textDetection({source: {filename: path}})
+  return vision.textDetection({content: file})
   .then((results) => {
     detections = results[0].fullTextAnnotation.text;
     return detections
