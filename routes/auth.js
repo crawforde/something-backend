@@ -2,13 +2,10 @@
 
 var express = require('express');
 var _ = require('underscore');
-<<<<<<< HEAD
 var router = express.Router();
 var models = require('../models/models');
-=======
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
->>>>>>> e03433e45a9925238e1eccc76b6e0ea4860a901a
 
 
 module.exports = function (passport) {

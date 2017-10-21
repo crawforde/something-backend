@@ -2,6 +2,26 @@
 
 const router = require('express').Router();
 
+router.post('/create', function(req, res) {
+    if (!validateReq(req.body)) {
+      console.log('no req.body')
+    }
+    var e = new models.Event({
+      eventDate: req.body.eventDate,
+      eventLocation: req.body.eventLocation,
+      eventDescription: req.body.eventDescription
+    });
+    e.save(function(err, user) {
+      if (err) {
+        console.log(err);
+        res.status(500);
+        return;
+      }
+      res.status(200);
+    });
+})
+
+
 router.get('/test', function(req, res) {
   res.json({
     running: true

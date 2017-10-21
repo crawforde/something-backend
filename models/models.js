@@ -5,7 +5,7 @@ var connect = process.env.MONGODB_URI || require('./connect');
 mongoose.connect(connect);
 
 var userSchema = mongoose.Schema({
-  email: {
+  username: {
     type: String,
     required: false
   },
@@ -27,7 +27,7 @@ var userSchema = mongoose.Schema({
   }
 });
 
-var tweetSchema = mongoose.Schema({
+var pinSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User'
@@ -36,7 +36,7 @@ var tweetSchema = mongoose.Schema({
     type: String,
     required: false
   },
-  content: {
+  location: {
     type: String,
     required: false
   }
@@ -161,86 +161,19 @@ userSchema.methods.getTweets = function (callback){
   }
 }
 
-tweetSchema.methods.numLikes = function (tweetId, callback){
+pinSchema.methods.numLikes = function (tweetId, callback){
 
 }
 
 
 var User = mongoose.model('User', userSchema);
-var Tweet = mongoose.model('Tweet', tweetSchema);
+var Pin = mongoose.model('Pin', pinSchema);
 var Event = mongoose.model('Event', eventSchema);
 var Follow = mongoose.model('Follow', followsSchema);
 
 module.exports = {
   User: User,
-  Tweet: Tweet,
+  Pin: Pin,
   Event: Event,
   Follow: Follow
 };
-
-
-
-
-
-// "use strict";
-//
-// var mongoose = require('mongoose');
-// mongoose.Promise = Promise;
-// var findOrCreate = require('mongoose-findorcreate');
-//
-// mongoose.connect(process.env.MONGODB_URI, {
-//   useMongoClient: true
-// });
-//
-// var userSchema = mongoose.Schema({
-//   username: {
-//     type: String,
-//     unique: true,
-//     required: true
-//   },
-//   password: {
-//     type: String,
-//     required: true
-//   }
-// });
-//
-// var messageSchema = mongoose.Schema({
-//   from: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     required: true,
-//     ref: 'User'
-//   },
-//   to: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'User',
-//     required: true
-//   },
-//   timestamp: {
-//     type: Date,
-//     default: Date.now,
-//     required: true,
-//     index: true
-//   },
-//   body: {
-//     type: String,
-//     default: 'HoHoHo',
-//     required: true
-//   },
-//   location: {
-//     longitude: {
-//       type: Number,
-//       required: false
-//     },
-//     latitude: {
-//       type: Number,
-//       required: false
-//     }
-//   }
-// });
-//
-// userSchema.plugin(findOrCreate);
-//
-// module.exports = {
-//   User: mongoose.model('User', userSchema),
-//   Message: mongoose.model('Message', messageSchema),
-// };
