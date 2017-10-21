@@ -49,7 +49,7 @@ router.get('/test', function(req, res) {
 
 router.get('/users/', function(req, res, next) {
   // Gets all users
-  User.find({}, function(err, users) {
+  models.User.find({}, function(err, users) {
     res.render('profiles', {allUsers: users, requser: req.user})
   })
 });
