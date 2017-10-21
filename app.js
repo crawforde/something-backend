@@ -2,6 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var bodyParser = require('body-parser');
 var FacebookStrategy = require('passport-facebook');
+var LocalStrategy = require('passport-local');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 var session = require('cookie-session');
@@ -97,7 +98,6 @@ module.exports = app;
 // var path = require('path');
 // var bodyParser = require('body-parser');
 // var passport = require('passport');
-// var LocalStrategy = require('passport-local');
 // var util = require('util');
 // var flash = require('connect-flash');
 //
