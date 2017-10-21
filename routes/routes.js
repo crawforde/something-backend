@@ -37,13 +37,13 @@ router.get('/test', function(req, res) {
   });
 });
 
-router.use(function(req, res, next){
-  if (!req.user) {
-    res.redirect('/login');
-  } else {
-    return next();
-  }
-});
+// router.use(function(req, res, next){
+//   if (!req.user) {
+//     res.redirect('/login');
+//   } else {
+//     return next();
+//   }
+// });
 
 router.get('/users/', function(req, res, next) {
   // Gets all users
