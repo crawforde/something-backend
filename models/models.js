@@ -5,14 +5,13 @@ var connect = process.env.MONGODB_URI || require('./connect');
 mongoose.connect(connect);
 
 var userSchema = mongoose.Schema({
-  username: {
+  email: {
     type: String,
-    unique: true,
-    required: true
+    required: false
   },
   password: {
     type: String,
-    required: true
+    required: false
   },
   displayName: {
     type: String
@@ -61,11 +60,11 @@ var eventSchema = mongoose.Schema({
     required: false
   },
   eventLongitude: {
-    type: Number,
+    type: String,
     required: false
   },
   eventLatitude: {
-    type: Number,
+    type: String,
     required: false
   },
   eventDescription: {
