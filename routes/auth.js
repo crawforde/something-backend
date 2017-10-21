@@ -69,14 +69,14 @@ module.exports = function (passport) {
       });
   })
   //
-  // router.get('/logout', function(req, res) {
-  //   req.logout();
-  //   res.json({
-  //     success: true,
-  //     message: 'logged out.'
-  //   });
-  // });
-  //
+  router.get('/logout', function(req, res) {
+    req.logout();
+    res.json({
+      success: true,
+      message: 'logged out.'
+    });
+  });
+
   router.get('/login/success', function(req, res) {
     var user = _.pick(req.user, 'username', '_id');
     console.log(req.user)
