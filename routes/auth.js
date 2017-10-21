@@ -2,14 +2,14 @@
 
 var express = require('express');
 var _ = require('underscore');
-var router = express.Router();
+var router = require('express').Router();
 var models = require('../models/models');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
 
+
 module.exports = function (passport) {
-  var router = express.Router();
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: true }));
 
@@ -96,70 +96,6 @@ module.exports = function (passport) {
         error: 'Error: Session not found. Please log in to see content.'
       });
     }
-  });
-
-
-  router.get('/users', function(req, res) {
-    User
-    .find()
-    .exec(function(err, users) {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          error: err.message
-        });
-      } else {
-        res.json({
-          success: true,
-          // TODO simplify this
-          users: users.map(_.partial(_.pick, _, ['username', '_id']))
-        });
-      }
-    });
-  });
-
-  router.get('/messages', function(req, res) {
-    Message.find({
-      $or:[
-        {to: req.user._id},
-        {from: req.user._id}
-      ]
-    })
-      .sort({
-        timestamp: -1
-      })
-      .populate('to from', 'username')
-      .exec(function(err, messages) {
-        if (err) {
-          res.status(500).json({
-            success: false,
-            error: err.message
-          });
-        } else {
-          res.json({
-            success: true,
-            messages: messages
-          });
-        }
-      });
-  });
-
-  router.post('/messages', function(req, res) {
-    var params = _.pick(req.body, ['body', 'location', 'to']);
-    params.from = req.user._id;
-    new Message(params).save(function(err, message) {
-      if (err) {
-        res.status(400).json({
-          success: false,
-          error: err.message
-        });
-      } else {
-        res.json({
-          success: true,
-          message: message
-        });
-      }
-    });
   });
 
   return router;
