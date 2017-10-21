@@ -9,7 +9,9 @@ router.post('/create', function(req, res) {
     var e = new models.Event({
       eventDate: req.body.eventDate,
       eventLocation: req.body.eventLocation,
-      eventDescription: req.body.eventDescription
+      eventDescription: req.body.eventDescription,
+      eventLatitude: req.body.eventLatitude,
+      eventLongitude: req.body.eventLongitude
     });
     e.save(function(err, event) {
       if (err) {
@@ -17,11 +19,13 @@ router.post('/create', function(req, res) {
         return;
       }
       res.status(200);
+      res.json({success: true, event: event});
     });
 })
 
 router.get('/events', function(req, res, next) {
   // Gets all users
+  console.log('GETS HERE')
   models.Event.find({}, function(err, events) {
     console.log(events);
     res.json({success: true, events: events});
