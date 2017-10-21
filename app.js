@@ -49,7 +49,7 @@ app.use(passport.session());
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
 app.get('/auth/facebook/callback',
-passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login/failure' }),
 // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
 (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
