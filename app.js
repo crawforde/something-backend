@@ -13,13 +13,24 @@ const transformFacebookProfile = (profile) => ({
   avatar: profile.picture.data.url,
 });
 
-// Register Facebook Passport strategy
-passport.use(new FacebookStrategy(facebook,
-  // Gets called when user authorizes access to their profile
-  async (accessToken, refreshToken, profile, done)
-  // Return done callback and pass transformed user object
-  => done(null, transformFacebookProfile(profile._json))
-));
+// // Register Facebook Passport strategy
+// passport.use(new FacebookStrategy(facebook,
+//   // Gets called when user authorizes access to their profile
+//   async (accessToken, refreshToken, profile, done)
+//   // Return done callback and pass transformed user object
+//   => done(null, transformFacebookProfile(profile._json))
+// ));
+
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: 'https://something-horizons.herokuapp.com/auth/facebook/callback'
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({facebookId: proifle.id }, function (err, user) {
+    return cb(err, user);
+  });
+}
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
