@@ -6,7 +6,7 @@ var GoogleStrategy = require('passport-google-oauth20');
 //var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
-var User = require('./models/models');
+var {User} = require('./models/models');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
@@ -87,16 +87,14 @@ passport.use(new LocalStrategy(function(username, password, done) {
 //ROUTES
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope:
-  	[ 'https://localhost:3000/auth/plus.login',
-  	  'https://localhost:3000/auth/plus.profile.emails.read' ] }
-));
+  passport.authenticate('google'));
 
-app.get( '/users/register',
+app.get( '/auth/google/',
 	passport.authenticate( 'google', {
-		successRedirect: '/users',
 		failureRedirect: '/login'
-}));
+}), function(req, res){
+  res.redirect('/users');
+});
 
 
 
