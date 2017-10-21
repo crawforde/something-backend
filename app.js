@@ -14,8 +14,6 @@ const transformFacebookProfile = (profile) => ({
   avatar: profile.picture.data.url,
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // // Register Facebook Passport strategy
 // passport.use(new FacebookStrategy(facebook,
@@ -44,6 +42,9 @@ passport.deserializeUser((user, done) => done(null, user));
 
 // Initialize http server
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Initialize Passport
 app.use(passport.initialize());
