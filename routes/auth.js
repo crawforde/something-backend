@@ -98,9 +98,12 @@ module.exports = function (passport) {
   //     });
   //   }
   // });
-  router.use('/', function(req,res,next){
+  router.get('/', function(req,res,next){
     res.send('hi there!')
   });
+  router.use(function(req,res,next){
+    next()
+  })
 
   return router;
 };
