@@ -1,6 +1,6 @@
-import express from 'express';
-import passport from 'passport';
-import FacebookStrategy from 'passport-facebook';
+var express = require('express');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 // Import Facebook and Google OAuth apps configs
