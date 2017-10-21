@@ -21,10 +21,6 @@ const transformFacebookProfile = (profile) => ({
 //   => done(null, transformFacebookProfile(profile._json))
 // ));
 
-app.use(session({
-  keys: [ process.env.SECRET || 'fake secret' ]
-}));
-
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -44,6 +40,10 @@ passport.deserializeUser((user, done) => done(null, user));
 
 // Initialize http server
 const app = express();
+
+app.use(session({
+  keys: [ process.env.SECRET || 'fake secret' ]
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
