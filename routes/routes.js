@@ -23,7 +23,6 @@ router.post('/create', function(req, res) {
 router.get('/events', function(req, res, next) {
   // Gets all users
   models.Event.find({}, function(err, events) {
-    console.log(events)
     res.send(events);
   })
 });
