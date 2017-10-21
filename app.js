@@ -30,7 +30,7 @@ function(accessToken, refreshToken, profile, cb) {
   User.findOrCreate({facebookId: proifle.id }, function (err, user) {
     return cb(err, user);
   });
-}
+}));
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
