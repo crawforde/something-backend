@@ -5,13 +5,14 @@ var connect = process.env.MONGODB_URI || require('./connect');
 mongoose.connect(connect);
 
 var userSchema = mongoose.Schema({
-  email: {
+  username: {
     type: String,
-    required: false
+    unique: true,
+    required: true
   },
   password: {
     type: String,
-    required: false
+    required: true
   },
   displayName: {
     type: String
