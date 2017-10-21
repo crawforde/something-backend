@@ -33,6 +33,7 @@ module.exports = function (passport) {
       username: req.body.username,
       password: req.body.password
     })
+    console.log('USER', user);
     //var params = _.pick(req.body, ["username", "password"]);
     user.save(function(err, user) {
       if (err) {
