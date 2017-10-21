@@ -5,7 +5,7 @@ var FacebookStrategy = require('passport-facebook');
 var LocalStrategy = require('passport-local');
 var util = require('util');
 var session = require('cookie-session');
-var { User } = require('./models/models');
+var models = require('./models/models');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
@@ -62,7 +62,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
     return;
   }
   // Find the user with the given username
-  User.findOne({ username: username, password: password }, function (err, user) {
+  models.User.findOne({ username: username, password: password }, function (err, user) {
     // if there's an error, finish trying to authenticate (auth failed)
     if (err) {
       done(err);
