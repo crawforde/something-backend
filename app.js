@@ -11,6 +11,7 @@ var flash = require('connect-flash');
 var models = require('./models');
 var User = models.User;
 var routes = require('./routes');
+const domain = "https://something-horizons.herokuapp.com";
 
 // Make sure we have all required env vars. If these are missing it can lead
 // to confusing, unpredictable errors later.
@@ -77,6 +78,7 @@ app.get('/test', function(req, res) {
 });
 
 app.use(routes(passport));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
