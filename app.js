@@ -4,7 +4,7 @@ var FacebookStrategy = require('passport-facebook');
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 // Import Facebook and Google OAuth apps configs
-var { facebook } = require('./config');
+// var { facebook } = require('./config');
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
