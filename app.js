@@ -16,9 +16,6 @@ const transformFacebookProfile = (profile) => ({
   avatar: profile.picture.data.url,
 });
 
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: true}));
-
 // Register Facebook Passport strategy
 // passport.use(new FacebookStrategy(facebook,
 //   // Gets called when user authorizes access to their profile
@@ -35,6 +32,9 @@ passport.deserializeUser((user, done) => done(null, user));
 
 // Initialize http server
 const app = express();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
   keys: [ process.env.SECRET || 'fake secret' ]
