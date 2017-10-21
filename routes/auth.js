@@ -63,7 +63,7 @@ module.exports = function (passport) {
         } else {
           res.json({
             success: true,
-            user
+            user: user
           });
         }
       });
@@ -79,7 +79,7 @@ module.exports = function (passport) {
 
   router.get('/login/success', function(req, res) {
     var user = _.pick(req.user, 'username', '_id');
-    console.log('NEW USER MADE')
+    console.log(req.user)
     res.json({
       success: true,
       user: user
