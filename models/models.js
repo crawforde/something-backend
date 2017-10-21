@@ -60,11 +60,11 @@ var eventSchema = mongoose.Schema({
     required: false
   },
   eventLongitude: {
-    type: String,
+    type: Number,
     required: false
   },
   eventLatitude: {
-    type: String,
+    type: Number,
     required: false
   },
   eventDescription: {
