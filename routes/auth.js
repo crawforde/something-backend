@@ -3,6 +3,7 @@
 var express = require('express');
 var { User, Message } = require('../models');
 var _ = require('underscore');
+var mongoose = require('mongoose');
 
 module.exports = function (passport) {
   var router = express.Router();
@@ -23,8 +24,12 @@ module.exports = function (passport) {
   }));
 
   router.post('/register', function(req, res, next) {
-    var params = _.pick(req.body, ['username', 'password']);
-    User.create(params, function(err, user) {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password
+    })
+    //var params = _.pick(req.body, ["username", "password"]);
+    user.save(function(err, user) {
       if (err) {
         res.status(400).json({
           success: false,
