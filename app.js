@@ -3,7 +3,7 @@ var passport = require('passport');
 var bodyParser = require('body-parser');
 var LocalStrategy = require('passport-local');
 var GoogleStrategy = require('passport-google-oauth20');
-var google = require('./config');
+//var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
 var User = require('./models/models');
@@ -24,9 +24,9 @@ passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
 passport.use(new GoogleStrategy({
-    clientID:     google.clientID,
-    clientSecret: google.clientSecret,
-    callbackURL: google.callbackURL,
+    clientID:     process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL,
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
