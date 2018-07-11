@@ -6,11 +6,7 @@ var GoogleStrategy = require('passport-google-oauth20');
 //var google = require('./config');
 var util = require('util');
 var session = require('cookie-session');
-<<<<<<< HEAD
-var {User} = require('./models/models');
-=======
 var { User } = require('./models/models');
->>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
 var auth = require('./routes/auth');
 var routes = require('./routes/routes');
 
@@ -27,6 +23,20 @@ passport.serializeUser((user, done) => done(null, user));
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
 
+
+// passport.use(new GoogleStrategy({
+//     clientID:     process.env.CLIENT_ID,
+//     clientSecret: process.env.CLIENT_SECRET,
+//     callbackURL: process.env.CALLBACK_URL,
+//     passReqToCallback   : true
+//   },
+//   function(request, accessToken, refreshToken, profile, done) {
+//     models.User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//       return done(err, user);
+//     });
+//   }
+// ));
+
 // passport.use(new GoogleStrategy({
 //     clientID:     process.env.CLIENT_ID,
 //     clientSecret: process.env.CLIENT_SECRET,
@@ -39,6 +49,7 @@ passport.deserializeUser((user, done) => done(null, user));
 //     });
 //   }
 // ));
+
 // Initialize http server
 var app = express();
 
@@ -89,7 +100,6 @@ passport.use(new LocalStrategy(function(username, password, done) {
 }));
 
 //ROUTES
-<<<<<<< HEAD
 
 app.get('/auth/google',
   passport.authenticate('google'));
@@ -100,21 +110,9 @@ app.get( '/auth/google/',
 }), function(req, res){
   res.redirect('/users');
 });
-=======
-//
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope:
-//   	[ 'https://localhost:3000/auth/plus.login',
-//   	  'https://localhost:3000/auth/plus.profile.emails.read' ] }
-// ));
-//
-// app.get( '/users/register',
-// 	passport.authenticate( 'google', {
-// 		successRedirect: '/users',
-// 		failureRedirect: '/login'
-// }));
->>>>>>> a05a9aa5c86ea93fe60392f7ef818143a781fb17
 
+app.use(auth(passport));
+app.use(routes);
 
 
 module.exports = app;
